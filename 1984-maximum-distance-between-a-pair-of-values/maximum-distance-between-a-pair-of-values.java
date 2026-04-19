@@ -21,7 +21,7 @@ class Solution {
                 r = mid-1;
             }
         }
-        if (l <= end && arr[l] <= target) return l;
+        if (l <= end) return l;
         return -1;
     }
 }
