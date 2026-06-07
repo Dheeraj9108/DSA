@@ -7,13 +7,9 @@ class MedianFinder {
     }
     
     public void addNum(int num) {
-        if(maxHeap.isEmpty() || num < maxHeap.peek()) maxHeap.offer(num);
-        else {
-            minHeap.offer(num);
-        } 
-
-        if(maxHeap.size() - minHeap.size() > 1) minHeap.offer(maxHeap.poll()); 
-        else if (minHeap.size() - maxHeap.size() >= 1) maxHeap.offer(minHeap.poll());
+        maxHeap.offer(num);
+        minHeap.offer(maxHeap.poll());
+        if(minHeap.size() > maxHeap.size()) maxHeap.offer(minHeap.poll());
     }
     
     public double findMedian() {
