@@ -27,7 +27,7 @@ class Solution {
     public List<List<Integer>> verticalTraversal(TreeNode root) {
         Map<Integer, PriorityQueue<Pair<Integer, Integer>>> map = new TreeMap<>();
         dfs(map,root,0,0);
-        System.out.println(map);
+
         List<List<Integer>> list = new ArrayList<>();
         for(PriorityQueue<Pair<Integer, Integer>> p :map.values()){
             List<Integer> temp = new ArrayList<>();
