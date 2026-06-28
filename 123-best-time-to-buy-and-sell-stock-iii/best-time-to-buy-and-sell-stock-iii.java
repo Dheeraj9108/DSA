@@ -25,7 +25,24 @@ class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
         int dp[][][] = new int[n+1][2][3];
-        for(int states[][]: dp) for(int subState[] : states) Arrays.fill(subState,-1);   
-        return solve(prices,0,1,dp,2);
+        // for(int states[][]: dp) for(int subState[] : states) Arrays.fill(subState,-1);  
+        
+        for (int day = prices.length - 1; day >= 0; day--) {
+            for (int buy = 0; buy <= 1; buy++) {
+                for(int txn = 1; txn <= 2; txn++){
+                    int take = 0;
+                    int skip = 0;
+                    if (buy == 1) {
+                        take = dp[day+1][0][txn] - prices[day];
+                    } else {
+                        take = prices[day] + dp[day+1][1][txn-1];
+                    }
+                    skip = dp[day+1][buy][txn];
+                    dp[day][buy][txn] = Math.max(take,skip);
+                }
+            }
+        }
+        return dp[0][1][2];
+        // return solve(prices,0,1,dp,2);
     }
 }
