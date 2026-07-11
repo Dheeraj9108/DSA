@@ -27,8 +27,6 @@ class Solution {
         for(int i = 0;i<n;i++){
             if(!vis[i]){
                 Pair<Integer, Integer> pair = dfs(i,adj,vis);
-                System.out.println(i);
-                System.out.println(pair);
                 int nodes = pair.getKey();
                 int e = pair.getValue()/2;
                 int expected = (nodes*(nodes-1))/2;
