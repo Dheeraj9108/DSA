@@ -1,18 +1,19 @@
 class Solution {
-    private boolean solve(int nums[], int i, int j, int player1, int player2, int turn){
+    private int solve(int nums[], int i, int j){
         if(i > j) {
-            if(player1 >= player2) return true;
-            return false; 
+            return 0;
         }
 
-        if(turn == 1) {
-            return solve(nums,i+1, j, player1+nums[i], player2, 0) || solve(nums,i, j-1, player1+nums[j], player2,0);
-        } else {
-            return solve(nums,i+1, j, player1, player2+nums[i],1) && solve(nums,i, j-1, player1, player2+nums[j],1);
-        }
+        int take_i = nums[i]+ Math.min(solve(nums,i+2,j),solve(nums,i+1,j-1));
+        int take_j = nums[j]+ Math.min(solve(nums,i,j-2),solve(nums,i+1,j-1));
 
+        return Math.max(take_i, take_j);
     }
     public boolean predictTheWinner(int[] nums) {
-        return solve(nums,0,nums.length-1, 0,0,1);
+        int total = 0;
+        for(int ele : nums) total+=ele; 
+        int scorep1 = solve(nums, 0, nums.length-1);
+        int scorep2 = total - scorep1;
+        return scorep1 >= scorep2; 
     }
 }
