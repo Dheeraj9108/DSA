@@ -59,11 +59,11 @@ class Solution {
     }
 
     public int[] maximumWeight(List<List<Integer>> intervals) {
-        int idx = 0;
+        int j = 0;
         int n = intervals.size();
         dp = new Pair[n + 1][5];
         for (List<Integer> list : intervals) {
-            list.add(idx++);
+            list.add(j++);
         }
         next = new int[n];
         Collections.sort(intervals, (a, b) -> {
@@ -77,32 +77,36 @@ class Solution {
             next[i] = getNextIndex(intervals, end);
         }
 
-        Pair<Long, List<Integer>> ans = solve(0, 4, intervals);
+        for (int cnt = 0; cnt <= 4; cnt++) {
+            dp[n][cnt] = new Pair<Long, List<Integer>>(0L, new ArrayList<>());
+        }
 
-        // for (int idx = 0; idx <= n; idx++) {
-        //     dp[idx][4] = new Pair<Long, List<Integer>>(0L, new ArrayList<>());
-        // }
+        for (int idx = 0; idx <= n; idx++) {
+            dp[idx][0] = new Pair<Long, List<Integer>>(0L, new ArrayList<>());
+        }
 
-        // for (int idx = n - 1; idx > 0; idx--) {
-        //     for (int cnt = 0; cnt <= 4; cnt++) {
-        //         int nextIdx = next[idx];
-        //         Pair<Long, List<Integer>> temp = dp[nextIdx][cnt-1];
-        //         List<Integer> l = new ArrayList<>(temp.getValue());
-        //         l.add(intervals.get(idx).get(3));
-        //         Collections.sort(l);
-        //         Pair<Long, List<Integer>> take = new Pair<Long, List<Integer>>(
-        //                 temp.getKey() + intervals.get(idx).get(2), l);
-        //         Pair<Long, List<Integer>> skip = dp[idx+1][cnt];
-        //         Pair<Long, List<Integer>> res = null;
+        for (int idx = n - 1; idx >= 0; idx--) {
+            for (int cnt = 1; cnt <= 4; cnt++) {
+                int nextIdx = next[idx];
+                Pair<Long, List<Integer>> temp = dp[nextIdx][cnt - 1];
+                List<Integer> l = new ArrayList<>(temp.getValue());
+                l.add(intervals.get(idx).get(3));
+                Collections.sort(l);
+                Pair<Long, List<Integer>> take = new Pair<Long, List<Integer>>(
+                        temp.getKey() + intervals.get(idx).get(2), l);
+                Pair<Long, List<Integer>> skip = dp[idx + 1][cnt];
+                Pair<Long, List<Integer>> res = null;
 
-        //         if (compare(take, skip)) {
-        //             res = take;
-        //         } else
-        //             res = skip;
+                if (compare(take, skip)) {
+                    res = take;
+                } else
+                    res = skip;
 
-        //         return dp[idx][cnt] = res;
-        //     }
-        // }
+                dp[idx][cnt] = res;
+            }
+        }
+
+        Pair<Long, List<Integer>> ans = dp[0][4];
 
         int res[] = new int[ans.getValue().size()];
         for (int i = 0; i < ans.getValue().size(); i++) {
