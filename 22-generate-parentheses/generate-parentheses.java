@@ -1,5 +1,5 @@
 class Solution {
-    Set<String> ans = new HashSet<>();
+    List<String> ans = new ArrayList<>();
     public void solve(int op, int cl, StringBuilder sb){
         if(op == 0 && cl == 0){
             ans.add(sb.toString());
@@ -22,7 +22,7 @@ class Solution {
 
     public List<String> generateParenthesis(int n) {
         solve(n-1,n,new StringBuilder("("));
-        return new ArrayList<>(ans);    
+        return ans;
     }
 }
 
